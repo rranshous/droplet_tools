@@ -5,11 +5,11 @@ After=etc_ambassador.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=/bin/bash -c "/usr/bin/docker kill vulcan1; 1"
-ExecStartPre=/bin/bash -c "/usr/bin/docker rm vulcan1; 1"
+ExecStartPre=/bin/bash -c "/usr/bin/docker kill vulcan1; echo '0'"
+ExecStartPre=/bin/bash -c "/usr/bin/docker rm vulcan1; echo '0'"
 ExecStartPre=/usr/bin/docker pull mailgun/vulcand
 ExecStart=/usr/bin/docker run --rm --name vulcan1 -p 80:80 --link etc_ambassador:etc_host-p 8182:8182 mailgun/vulcand /opt/vulcan/vulcand -apiInterface=0.0.0.0 -interface=0.0.0.0 -etcd=http://etc_host:4001 -port=80 -apiPort=8182
-ExecStop=/bin/bash -c "/usr/bin/docker kill vulcan1; 1"
+ExecStop=/bin/bash -c "/usr/bin/docker kill vulcan1; echo '0'"
 
 [X-Fleet]
 Global=true
