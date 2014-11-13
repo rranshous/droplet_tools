@@ -3,9 +3,8 @@ Description=Proxy to local etcd
 After=docker.service
 
 [Service]
-ExecStart=docker run -name etc_ambassador -t ubuntu \
-  /bin/bash -c "mknod backpipe p; \
-                nc -l -p 4001 < backpipe | nc 10.100.43.1 4001 > backpipe"
+ExecStart=/usr/bin/docker run -name etc_ambassador -t ubuntu /bin/bash -c "mknod backpipe p; nc -l -p 4001 < backpipe | nc 10.100.43.1 4001 > backpipe"
 
 [X-Fleet]
 Global=true
+
