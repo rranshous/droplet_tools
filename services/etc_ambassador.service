@@ -5,10 +5,9 @@ After=docker.service
 [Service]
 ExecStartPre=/bin/bash -c "/usr/bin/docker kill etc_ambassador; echo '0'"
 ExecStartPre=/bin/bash -c "/usr/bin/docker rm etc_ambassador; echo '0'"
-ExecStartPre/usr/bin/docker pull quay.io/rranshous/etc_ambassador
+ExecStartPre=/usr/bin/docker pull quay.io/rranshous/etc_ambassador
 ExecStart=/usr/bin/docker run --name etc_ambassador
 ExecStop=/bin/bash -c "/usr/bin/docker kill etc_ambassador; echo '0'"
 
 [X-Fleet]
 Global=true
-
