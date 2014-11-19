@@ -5,6 +5,7 @@ After=etc_ambassador.service
 
 [Service]
 TimeoutStartSec=0
+Restart=always
 ExecStartPre=/bin/bash -c "/usr/bin/docker kill vulcan1; echo '0'"
 ExecStartPre=/bin/bash -c "/usr/bin/docker rm vulcan1; echo '0'"
 ExecStartPre=/usr/bin/docker pull mailgun/vulcand

@@ -4,6 +4,7 @@ After=docker.service
 After=vulcand.service
 
 [Service]
+Restart=always
 TimeoutStartSec=0
 ExecStartPre=/bin/bash -c "/usr/bin/docker kill docker-register; echo '0'"
 ExecStartPre=/bin/bash -c "/usr/bin/docker rm docker-register; echo '0'"
