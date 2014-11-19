@@ -1,0 +1,28 @@
+[Unit]
+Description=Register service w/ vulcan
+BindsTo=docker-register.service
+After=docker-register.service
+Needs=etc_ambassador.service
+After=etc_ambassador.service
+
+[Service]
+EnvironmentFile=/etc/environment
+RemainAfterExit=yes
+
+ExecStart=/usr/bin/docker --link etc_ambassador:etc_host ubuntu /bin/bash -c "
+curl -L \
+ http://etc_host:4001/v2/keys/vulcand/upstreams/DOMAIN/endpoints/DOMAIN@N.service \
+ -XPUT -d value=http://CONTAINER_IP:SERVICE_PORT; \
+curl -L \
+ http://etc_host:4001/v2/keys/vulcand/hosts/DOMAIN.COM/locations/home/path \
+ -XPUT -d value=\"/.*\"; \
+"
+ExecStop=/usr/bin/docker --link etc_ambassador:etc_host ubuntu /bin/bash -c "
+curl -L \
+ http://etc_host:4001/v2/keys/vulcand/upstreams/DOMAIN/endpoints/DOMAIN@N.service \
+ -XDELETE; \
+"
+
+[X-Fleet]
+MachineOf=docker-register.service
+

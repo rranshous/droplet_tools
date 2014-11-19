@@ -1,0 +1,15 @@
+[Unit]
+Description=Private Docker Register
+After=docker.service
+After=vulcand.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=/bin/bash -c "/usr/bin/docker kill docker-register; echo '0'"
+ExecStartPre=/bin/bash -c "/usr/bin/docker rm docker-register; echo '0'"
+ExecStartPre=/usr/bin/docker pull mailgun/vulcand
+ExecStart=/usr/bin/docker run --name docker-register -p 80:5000 registry
+ExecStop=/bin/bash -c "/usr/bin/docker kill docker-register; echo '0'"
+
+[X-Fleet]
+MachineOf=vulcand.service

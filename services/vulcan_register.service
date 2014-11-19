@@ -1,0 +1,19 @@
+[Unit]
+Description=Register service w/ vulcan
+#BindsTo=DOMAIN@%i.service
+#After=DOMAIN@%i.service
+
+[Service]
+EnvironmentFile=/etc/environment
+RemainAfterExit=yes
+
+# ExecStart
+etcd set "/vulcand/upstreams/DOMAIN/endpoints/DOMAIN@N.service" "http://$CONTAINER_ID:N;
+etcd set "/vulcand/hosts/DOMAIN.COM/locations/home/path" "/.*";
+etcd set "/vulcand/hosts/DOMAIN.COM/locations/home/upstream" "DOMAIN"
+
+# ExecStop
+etcd rm  "/vulcand/upstreams/DOMAIN/endpoints/DOMAIN@N.service
+
+[X-Fleet]
+MachineOf=DOMAIN.COM@%i.service
