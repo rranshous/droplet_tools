@@ -9,7 +9,7 @@ After=etc_ambassador.service
 EnvironmentFile=/etc/environment
 RemainAfterExit=yes
 
-ExecStart=/usr/bin/docker --link etc_ambassador:etc_host ubuntu /bin/bash -c "
+ExecStart=/usr/bin/docker run --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c "
 curl -L \
  http://etc_host:4001/v2/keys/vulcand/upstreams/DOMAIN/endpoints/DOMAIN@N.service \
  -XPUT -d value=http://CONTAINER_IP:SERVICE_PORT; \
