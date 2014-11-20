@@ -1,23 +1,25 @@
 [Unit]
 Description=Register service w/ vulcan
+Requires=docker.service
+After=docker.service
 BindsTo=docker-register.service
 After=docker-register.service
-Needs=etc_ambassador.service
+Requires=etc_ambassador.service
 After=etc_ambassador.service
 
 [Service]
 EnvironmentFile=/etc/environment
 RemainAfterExit=yes
 
-ExecStart=/usr/bin/docker run --link docker-register:target --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c "
+ExecStart=/usr/bin/docker run --link docker-register:target --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c " \
   curl -L http://etc_host:4001/v2/keys/vulcand/hosts/docker-registry.local/locations/home/path -XPUT -d value=\"/.*\"; \
   curl -L http://etc_host:4001/v2/keys/vulcand/upstreams/docker-registry/endpoints/docker-registry.service -XPUT -d \
     value=`http://grep target /etc/hosts | cut -f1`:80; \
   curl -L http://etc_host:4001/v2/keys/vulcand/hosts/docker-registry.local/locations/home/upstream -XPUT -d value=docker-registry"
 
-ExecStop=/usr/bin/docker --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c "
+ExecStop=/usr/bin/docker --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c " \
   curl -L http://etc_host:4001/v2/keys/vulcand/upstreams/docker-registry/endpoints/docker-registry.service -XDELETE;"
 
 [X-Fleet]
-MachineOf=docker-register.service
+MachineOf=docker-registery.service
 

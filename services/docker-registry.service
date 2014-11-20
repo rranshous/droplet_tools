@@ -1,5 +1,6 @@
 [Unit]
 Description=Private Docker Register
+Requires=docker.service
 After=docker.service
 After=vulcand.service
 
