@@ -8,9 +8,8 @@ Restart=always
 TimeoutStartSec=0
 ExecStartPre=/bin/bash -c "/usr/bin/docker kill docker-register; echo '0'"
 ExecStartPre=/bin/bash -c "/usr/bin/docker rm docker-register; echo '0'"
-ExecStartPre=/usr/bin/docker pull mailgun/vulcand
+ExecStartPre=/usr/bin/docker pull registry
 ExecStart=/usr/bin/docker run --name docker-register -p 80:5000 registry
 ExecStop=/bin/bash -c "/usr/bin/docker kill docker-register; echo '0'"
 
 [X-Fleet]
-MachineOf=vulcand.service
