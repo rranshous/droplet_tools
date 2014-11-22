@@ -11,14 +11,14 @@ After=etc_ambassador.service
 EnvironmentFile=/etc/environment
 RemainAfterExit=yes
 
-ExecPreStart=/usr/bin/docker pull quay.io/rranshous/curl
-ExecStart=/usr/bin/docker run docker-registry_register --link docker-registry:target --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c " \
+ExecStartPre=/usr/bin/docker pull quay.io/rranshous/curl
+ExecStart=/usr/bin/docker run quay.io/rranshous/curl --link docker-registry:target --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c " \
   curl -L http://etc_host:4001/v2/keys/vulcand/hosts/docker-registry.local/locations/home/path -XPUT -d value=\"/.*\"; \
   curl -L http://etc_host:4001/v2/keys/vulcand/upstreams/docker-registry/endpoints/docker-registry.service -XPUT -d \
     value=`http://grep target /etc/hosts | cut -f1`:80; \
   curl -L http://etc_host:4001/v2/keys/vulcand/hosts/docker-registry.local/locations/home/upstream -XPUT -d value=docker-registry"
 
-ExecStop=/usr/bin/docker --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c " \
+ExecStop=/usr/bin/docker run --link etc_ambassador:etc_host quay.io/rranshous/curl /bin/bash -c " \
   curl -L http://etc_host:4001/v2/keys/vulcand/upstreams/docker-registry/endpoints/docker-registry.service -XDELETE;"
 
 [X-Fleet]

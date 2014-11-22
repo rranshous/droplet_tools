@@ -10,7 +10,7 @@ TimeoutStartSec=0
 ExecStartPre=/bin/bash -c "/usr/bin/docker kill docker-registry; echo '0'"
 ExecStartPre=/bin/bash -c "/usr/bin/docker rm docker-registry; echo '0'"
 ExecStartPre=/usr/bin/docker pull registry
-ExecStart=/usr/bin/docker run --rm --name docker-registry -p 8080:5000 registry
+ExecStart=/usr/bin/docker run -e "STANDALONE=true" --rm --name docker-registry -p 8080:5000 registry
 ExecStop=/bin/bash -c "/usr/bin/docker kill docker-registry; echo '0'"
 
 [X-Fleet]
