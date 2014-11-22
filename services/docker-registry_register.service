@@ -2,8 +2,8 @@
 Description=Register service w/ vulcan
 Requires=docker.service
 After=docker.service
-BindsTo=docker-register.service
-After=docker-register.service
+BindsTo=docker-registry.service
+After=docker-registry.service
 Requires=etc_ambassador.service
 After=etc_ambassador.service
 
@@ -22,5 +22,5 @@ ExecStop=/usr/bin/docker --link etc_ambassador:etc_host quay.io/rranshous/curl /
   curl -L http://etc_host:4001/v2/keys/vulcand/upstreams/docker-registry/endpoints/docker-registry.service -XDELETE;"
 
 [X-Fleet]
-MachineOf=docker-registery.service
+MachineOf=docker-registry.service
 
